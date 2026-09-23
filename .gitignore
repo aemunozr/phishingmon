@@ -1,0 +1,23 @@
+# Configuracion con secretos: NUNCA subir al repositorio
+.env
+
+# Datos locales: base SQLite y su journal WAL
+data/
+*.db
+*.db-wal
+*.db-shm
+
+# Evidencia descargada (puede contener contenido malicioso)
+downloads/
+
+# Logs
+logs/
+
+# Entorno virtual de Python
+.venv/
+venv/
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/

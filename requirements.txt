@@ -1,0 +1,11 @@
+# Dependencias de phishing-msg-collector.
+# Instalar con:  pip install -r requirements.txt
+#
+# Nota: sqlite3 es parte de la libreria estandar de Python (NO se agrega aqui).
+
+msal==1.31.1            # OAuth 2.0 Client Credentials contra Microsoft Graph
+requests==2.32.3        # Llamadas HTTP a Microsoft Graph (solo GET)
+python-dotenv==1.0.1    # Lee la configuracion desde el archivo .env
+extract-msg==0.54.1     # Convierte adjuntos .msg de Outlook a .eml (sin Outlook)
+olefile==0.47           # Lectura de contenedores OLE de los .msg (se usa directamente
+                        # para tolerar .msg con streams vacios, ej. "Report Phishing")

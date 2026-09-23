@@ -1,0 +1,99 @@
+2026-09-22 17:45:48 INFO Inicio de ejecucion
+2026-09-22 17:45:48 INFO Buzon: phishing@itau.cl
+2026-09-22 17:45:48 INFO Ventana de consulta: 2026-09-21T20:45:48Z a 2026-09-22T20:45:48Z (UTC)
+2026-09-22 17:45:49 INFO Autenticacion correcta
+2026-09-22 17:45:50 INFO Correos encontrados: 15
+2026-09-22 17:45:50 WARNING No se pudo convertir a EML (se conserva el MSG): No se pudo abrir el .msg para convertirlo.
+2026-09-22 17:45:50 INFO Muestra preparada (READY): C:\Users\camr4716\Documents\Proyectos Kiro\phishingmon\downloads\pending\20260922_204550_4eaa31d8
+2026-09-22 17:45:50 INFO SHA256 MSG: 9dd406723282d672fdd6db1776c3a25153c1f6630b6af403b6667268f743b090
+2026-09-22 17:45:51 INFO Stream "__substg1.0_1000001F" was requested but could not be found. Returning `None`.
+2026-09-22 17:45:51 INFO Stream "__substg1.0_10090102" was requested but could not be found. Returning `None`.
+2026-09-22 17:45:51 INFO Stream "__substg1.0_1000001F" was requested but could not be found. Returning `None`.
+2026-09-22 17:45:51 INFO Stream "__substg1.0_10090102" was requested but could not be found. Returning `None`.
+2026-09-22 17:45:51 INFO Header found, but "cc" is not included. Will be generated from other streams.
+2026-09-22 17:45:51 INFO Stream "__recip_version1.0_#00000000/__substg1.0_39FE001F" was requested but could not be found. Returning `None`.
+2026-09-22 17:45:51 INFO Muestra preparada (READY): C:\Users\camr4716\Documents\Proyectos Kiro\phishingmon\downloads\pending\20260922_204551_f0f9dce3
+2026-09-22 17:45:51 INFO SHA256 MSG: 9bfb68ffdfcfc2e0ac66a3b019090350c8aebc5a9391e569aa98d5066d7353aa
+2026-09-22 17:45:51 WARNING No se pudo convertir a EML (se conserva el MSG): No se pudo abrir el .msg para convertirlo.
+2026-09-22 17:45:51 INFO Muestra preparada (READY): C:\Users\camr4716\Documents\Proyectos Kiro\phishingmon\downloads\pending\20260922_204551_f5381c5e
+2026-09-22 17:45:51 INFO SHA256 MSG: 4700e0e7e17a201f37f16fcc808d2d3bc4ad8fea6cc71cec4a63357dbd7a5212
+2026-09-22 17:45:53 WARNING No se pudo convertir a EML (se conserva el MSG): No se pudo abrir el .msg para convertirlo.
+2026-09-22 17:45:53 INFO Muestra preparada (READY): C:\Users\camr4716\Documents\Proyectos Kiro\phishingmon\downloads\pending\20260922_204553_4872b6d7
+2026-09-22 17:45:53 INFO SHA256 MSG: 875d6d075a27571611d02816de642da6b5178af202acde9f789c57f5a8636981
+2026-09-22 17:45:53 INFO Stream "__substg1.0_1000001F" was requested but could not be found. Returning `None`.
+2026-09-22 17:45:53 INFO Stream "__substg1.0_10090102" was requested but could not be found. Returning `None`.
+2026-09-22 17:45:53 INFO Stream "__substg1.0_1000001F" was requested but could not be found. Returning `None`.
+2026-09-22 17:45:53 INFO Stream "__substg1.0_10090102" was requested but could not be found. Returning `None`.
+2026-09-22 17:45:53 INFO Header found, but "cc" is not included. Will be generated from other streams.
+2026-09-22 17:45:53 INFO Stream "__recip_version1.0_#00000000/__substg1.0_39FE001F" was requested but could not be found. Returning `None`.
+2026-09-22 17:45:53 INFO Muestra preparada (READY): C:\Users\camr4716\Documents\Proyectos Kiro\phishingmon\downloads\pending\20260922_204553_0566ba47
+2026-09-22 17:45:53 INFO SHA256 MSG: e972d6b8d80d1c123a54ad3f802d70fac86c37606a9c4127b50695361a091522
+2026-09-22 17:45:54 WARNING No se pudo convertir a EML (se conserva el MSG): No se pudo abrir el .msg para convertirlo.
+2026-09-22 17:45:54 INFO Muestra preparada (READY): C:\Users\camr4716\Documents\Proyectos Kiro\phishingmon\downloads\pending\20260922_204554_774909c8
+2026-09-22 17:45:54 INFO SHA256 MSG: 89be0bec8c6c072a6f0acf77947bfad84ce8d72c84eb52f503488cd60a3a121c
+2026-09-22 17:45:55 INFO Stream "__substg1.0_1000001F" was requested but could not be found. Returning `None`.
+2026-09-22 17:45:55 INFO Stream "__substg1.0_10090102" was requested but could not be found. Returning `None`.
+2026-09-22 17:45:55 INFO Stream "__substg1.0_1000001F" was requested but could not be found. Returning `None`.
+2026-09-22 17:45:55 INFO Stream "__substg1.0_10090102" was requested but could not be found. Returning `None`.
+2026-09-22 17:45:55 INFO Header found, but "cc" is not included. Will be generated from other streams.
+2026-09-22 17:45:55 INFO Stream "__recip_version1.0_#00000000/__substg1.0_39FE001F" was requested but could not be found. Returning `None`.
+2026-09-22 17:45:55 INFO Muestra preparada (READY): C:\Users\camr4716\Documents\Proyectos Kiro\phishingmon\downloads\pending\20260922_204555_fbefedb1
+2026-09-22 17:45:55 INFO SHA256 MSG: ce42f191341e587ee7fe95f5eb60b7abe390fab325276531d0956598fde3897b
+2026-09-22 17:45:55 INFO Stream "__substg1.0_1000001F" was requested but could not be found. Returning `None`.
+2026-09-22 17:45:55 INFO Stream "__substg1.0_10090102" was requested but could not be found. Returning `None`.
+2026-09-22 17:45:55 INFO Stream "__substg1.0_1000001F" was requested but could not be found. Returning `None`.
+2026-09-22 17:45:55 INFO Stream "__substg1.0_10090102" was requested but could not be found. Returning `None`.
+2026-09-22 17:45:55 INFO Header found, but "cc" is not included. Will be generated from other streams.
+2026-09-22 17:45:55 INFO Stream "__recip_version1.0_#00000000/__substg1.0_39FE001F" was requested but could not be found. Returning `None`.
+2026-09-22 17:45:55 INFO Muestra preparada (READY): C:\Users\camr4716\Documents\Proyectos Kiro\phishingmon\downloads\pending\20260922_204555_c38e9eb3
+2026-09-22 17:45:55 INFO SHA256 MSG: 08b55a3d202c112908d241783bb3ded0df06e77f1bb14aad9a17dbc0fd7e9cc4
+2026-09-22 17:45:56 INFO Stream "__substg1.0_1000001F" was requested but could not be found. Returning `None`.
+2026-09-22 17:45:56 INFO Stream "__substg1.0_10090102" was requested but could not be found. Returning `None`.
+2026-09-22 17:45:56 INFO Stream "__substg1.0_1000001F" was requested but could not be found. Returning `None`.
+2026-09-22 17:45:56 INFO Stream "__substg1.0_10090102" was requested but could not be found. Returning `None`.
+2026-09-22 17:45:56 INFO Header found, but "cc" is not included. Will be generated from other streams.
+2026-09-22 17:45:56 INFO Stream "__recip_version1.0_#00000000/__substg1.0_39FE001F" was requested but could not be found. Returning `None`.
+2026-09-22 17:45:56 INFO Muestra preparada (READY): C:\Users\camr4716\Documents\Proyectos Kiro\phishingmon\downloads\pending\20260922_204556_e18add1c
+2026-09-22 17:45:56 INFO SHA256 MSG: ff473098f8d7b5b03550f4787303ece3abdeafbde2af8a91b8d4346a875d2500
+2026-09-22 17:45:57 INFO Stream "__substg1.0_1000001F" was requested but could not be found. Returning `None`.
+2026-09-22 17:45:57 INFO Stream "__substg1.0_10090102" was requested but could not be found. Returning `None`.
+2026-09-22 17:45:57 INFO Stream "__substg1.0_1000001F" was requested but could not be found. Returning `None`.
+2026-09-22 17:45:57 INFO Stream "__substg1.0_10090102" was requested but could not be found. Returning `None`.
+2026-09-22 17:45:57 INFO Header found, but "cc" is not included. Will be generated from other streams.
+2026-09-22 17:45:57 INFO Stream "__recip_version1.0_#00000000/__substg1.0_39FE001F" was requested but could not be found. Returning `None`.
+2026-09-22 17:45:57 INFO Muestra preparada (READY): C:\Users\camr4716\Documents\Proyectos Kiro\phishingmon\downloads\pending\20260922_204557_51e83c0f
+2026-09-22 17:45:57 INFO SHA256 MSG: c68b0b598b2d770dea337a011c29af8dea1bd5a3f033843fb6bbc9d1a77b5a31
+2026-09-22 17:46:00 WARNING No se pudo convertir a EML (se conserva el MSG): No se pudo abrir el .msg para convertirlo.
+2026-09-22 17:46:00 INFO Muestra preparada (READY): C:\Users\camr4716\Documents\Proyectos Kiro\phishingmon\downloads\pending\20260922_204600_e66ea778
+2026-09-22 17:46:00 INFO SHA256 MSG: e32c5672bf85df585cee4b82812bf79971ad909db8a886133eba58153b27ef1a
+2026-09-22 17:46:01 INFO Stream "__substg1.0_1000001F" was requested but could not be found. Returning `None`.
+2026-09-22 17:46:01 INFO Stream "__substg1.0_10090102" was requested but could not be found. Returning `None`.
+2026-09-22 17:46:01 INFO Stream "__substg1.0_1000001F" was requested but could not be found. Returning `None`.
+2026-09-22 17:46:01 INFO Stream "__substg1.0_10090102" was requested but could not be found. Returning `None`.
+2026-09-22 17:46:01 INFO Header found, but "cc" is not included. Will be generated from other streams.
+2026-09-22 17:46:01 INFO Stream "__recip_version1.0_#00000000/__substg1.0_39FE001F" was requested but could not be found. Returning `None`.
+2026-09-22 17:46:01 INFO Muestra preparada (READY): C:\Users\camr4716\Documents\Proyectos Kiro\phishingmon\downloads\pending\20260922_204601_3db6b505
+2026-09-22 17:46:01 INFO SHA256 MSG: e867b6c0a85893105f409b1993e57d5e3fc8b35a931b6f14abad242717335610
+2026-09-22 17:46:02 WARNING No se pudo convertir a EML (se conserva el MSG): No se pudo abrir el .msg para convertirlo.
+2026-09-22 17:46:02 INFO Muestra preparada (READY): C:\Users\camr4716\Documents\Proyectos Kiro\phishingmon\downloads\pending\20260922_204602_e9b9ce83
+2026-09-22 17:46:02 INFO SHA256 MSG: 7815751993e60106441bf35ba233857622b5e49735efd35c8886035146f07986
+2026-09-22 17:46:03 INFO Header found, but "cc" is not included. Will be generated from other streams.
+2026-09-22 17:46:03 INFO Stream "__recip_version1.0_#00000000/__substg1.0_39FE001F" was requested but could not be found. Returning `None`.
+2026-09-22 17:46:03 INFO Stream "__substg1.0_10130102" was requested but could not be found. Returning `None`.
+2026-09-22 17:46:03 INFO Stream "__substg1.0_10090102" was requested but could not be found. Returning `None`.
+2026-09-22 17:46:03 INFO HTML body was not found, attempting to generate from plain text body.
+2026-09-22 17:46:03 INFO Muestra preparada (READY): C:\Users\camr4716\Documents\Proyectos Kiro\phishingmon\downloads\pending\20260922_204603_f256336c
+2026-09-22 17:46:03 INFO SHA256 MSG: 2725238c74636745f608a0a11563517f4904716f20da8c9879bec3bbfde00d1d
+2026-09-22 17:46:04 WARNING No se pudo convertir a EML (se conserva el MSG): No se pudo abrir el .msg para convertirlo.
+2026-09-22 17:46:04 INFO Muestra preparada (READY): C:\Users\camr4716\Documents\Proyectos Kiro\phishingmon\downloads\pending\20260922_204604_ce85758c
+2026-09-22 17:46:04 INFO SHA256 MSG: 2f03bb71fd6f8a5c23d1df58a7ed4af9ff101f150a84d98e3801b762b461a86e
+2026-09-22 17:46:04 INFO ==== RESUMEN ====
+2026-09-22 17:46:04 INFO Correos en la ventana        : 15
+2026-09-22 17:46:04 INFO Adjuntos candidatos          : 15
+2026-09-22 17:46:04 INFO Adjuntos nuevos              : 15
+2026-09-22 17:46:04 INFO Omitidos por dedup           : 0
+2026-09-22 17:46:04 INFO Muestras guardadas           : 15
+2026-09-22 17:46:04 INFO EML generados                : 8
+2026-09-22 17:46:04 INFO Muestras ya observadas (hash): 0
+2026-09-22 17:46:04 INFO Errores                      : 0
+2026-09-22 17:46:04 INFO El buzon no fue modificado (SOLO LECTURA).
