@@ -37,6 +37,9 @@ aunque agreguen algo de codigo o complejidad.
 - **python-dotenv** para leer configuracion desde `.env`.
 - **SQLite** mediante el modulo estandar `sqlite3` (NO se agrega a requirements).
 - **extract-msg** para convertir `.msg` a `.eml` en Linux (sin Outlook).
+- **olefile** para leer los contenedores OLE de los `.msg`. Se usa directamente
+  para tolerar `.msg` con streams vacios (ej. correos del boton "Report
+  Phishing" de Outlook), que de otro modo no se podrian abrir.
 - **email** (libreria estandar de Python) para construir/serializar el `.eml`.
 - **cron** para la programacion periodica.
 - **flock** para evitar ejecuciones concurrentes.
@@ -50,10 +53,14 @@ msal
 requests
 python-dotenv
 extract-msg
+olefile
 ```
 
 `sqlite3` es parte de la libreria estandar de Python: **no** se agrega a
 `requirements.txt`.
+
+`olefile` normalmente lo instala `extract-msg` como dependencia, pero se declara
+de forma explicita porque el codigo lo importa directamente (ver arriba).
 
 ## Lo que NO se usa (evitar sobreingenieria)
 

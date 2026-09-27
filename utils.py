@@ -58,6 +58,13 @@ def desde_iso(texto):
 #  Logging seguro (nunca imprime secretos)
 # ---------------------------------------------------------------------------
 
+# ===========================================================================
+#  ZONA AVANZADA - NO MODIFICAR salvo que conozcas expresiones regulares y el
+#  modulo 'logging' de Python. Esto es una red de seguridad: aunque el codigo
+#  ya evita loguear secretos, aqui se enmascaran tokens/secretos por si alguno
+#  se colara. Quitar esto podria dejar secretos en los logs.
+# ===========================================================================
+
 # Patrones que, si aparecen en un mensaje de log, se enmascaran por precaucion.
 _PATRONES_SENSIBLES = [
     re.compile(r"(?i)(authorization\s*[:=]\s*)(bearer\s+)?[A-Za-z0-9\-._~+/]+=*"),
@@ -88,6 +95,10 @@ class FiltroSecretos(logging.Filter):
             record.msg = enmascarado
             record.args = ()
         return True
+
+# ===========================================================================
+#  FIN ZONA AVANZADA
+# ===========================================================================
 
 
 def configurar_logging(log_dir, log_level="INFO", debug=False):

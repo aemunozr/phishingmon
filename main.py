@@ -166,7 +166,10 @@ def main(argv=None):
         logger.info("Inicio de ejecucion")
         desde_dt, hasta_dt = resolver_ventana(args, cfg, base)
 
-        cliente = GraphClient(cfg.tenant_id, cfg.client_id, cfg.client_secret, cfg.mailbox)
+        cliente = GraphClient(
+            cfg.tenant_id, cfg.client_id, cfg.client_secret, cfg.mailbox,
+            max_download_bytes=cfg.max_attachment_size_bytes,
+        )
         collector = Collector(cfg, cliente, base)
 
         try:

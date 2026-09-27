@@ -1,0 +1,34 @@
+# =============================================================================
+#  .gitattributes
+# -----------------------------------------------------------------------------
+#  El desarrollo se hace en macOS/Windows, pero la aplicacion se instala en
+#  Linux (Ubuntu/RHEL). Este archivo evita un problema clasico: si un script se
+#  edita en Windows puede guardarse con saltos de linea CRLF y luego fallar en
+#  Linux con un error como "bad interpreter: /bin/bash^M".
+#
+#  Aqui forzamos saltos de linea LF (Unix) en los archivos que se ejecutan o se
+#  leen en el servidor Linux, sin importar en que sistema se editen.
+# =============================================================================
+
+# Por defecto, Git normaliza los archivos de texto a LF en el repositorio.
+* text=auto eol=lf
+
+# Scripts de shell: SIEMPRE LF (se ejecutan en Linux via cron).
+*.sh text eol=lf
+
+# Codigo y configuracion del proyecto: LF.
+*.py text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
+.env.example text eol=lf
+.gitignore text eol=lf
+
+# Archivos binarios o de evidencia: Git NO debe tocar sus saltos de linea.
+*.msg binary
+*.eml binary
+*.db binary
+*.db-wal binary
+*.db-shm binary
+*.png binary
+*.jpg binary
+*.pdf binary

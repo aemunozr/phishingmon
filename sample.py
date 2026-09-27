@@ -259,6 +259,13 @@ def guardar_eml(contenido, dir_muestra, nombre_base, max_bytes):
 #  Conversion .msg -> .eml
 # ---------------------------------------------------------------------------
 
+# ===========================================================================
+#  ZONA AVANZADA - NO MODIFICAR salvo que conozcas bien Python y olefile.
+#  Esto resuelve un defecto puntual de ciertos .msg de Outlook (streams OLE
+#  vacios del boton "Report Phishing"). No ejecuta contenido del correo: solo
+#  permite abrir el archivo para leer sus datos. Si se rompe, la conversion
+#  .msg -> .eml fallara, pero el .msg original (la evidencia) se conserva igual.
+# ===========================================================================
 @contextlib.contextmanager
 def _ole_tolerante():
     """
@@ -299,6 +306,9 @@ def _abrir_msg(ruta_msg):
         # Reintento tolerante para .msg con streams vacios (phish_alert, etc.).
         with _ole_tolerante():
             return extract_msg.openMsg(ruta)
+# ===========================================================================
+#  FIN ZONA AVANZADA
+# ===========================================================================
 
 
 def leer_subject_de_msg(ruta_msg):

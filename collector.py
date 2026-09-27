@@ -17,7 +17,7 @@ import os
 import database as db
 import sample as smp
 from graph_client import GraphError
-from utils import a_iso, ahora_utc, desde_iso
+from utils import a_iso
 
 logger = logging.getLogger(__name__)
 

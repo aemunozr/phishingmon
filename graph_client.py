@@ -15,6 +15,7 @@ Reglas de seguridad (ver .kiro/steering/security.md):
 No contiene logica de SQLite.
 """
 
+import base64
 import logging
 import time
 
@@ -46,11 +47,17 @@ class GraphAuthError(GraphError):
 class GraphClient:
     """Cliente READ ONLY de Microsoft Graph."""
 
-    def __init__(self, tenant_id, client_id, client_secret, mailbox):
+    def __init__(self, tenant_id, client_id, client_secret, mailbox,
+                 max_download_bytes=None):
         self.tenant_id = tenant_id
         self.client_id = client_id
         self.client_secret = client_secret
         self.mailbox = mailbox
+        # Limite defensivo de tamano de descarga (bytes). Si viene, se rechaza
+        # un adjunto ANTES de cargar su cuerpo en memoria, usando la cabecera
+        # Content-Length. sample.py aplica ademas un segundo control sobre los
+        # bytes ya escritos (defensa en profundidad). None = sin limite aqui.
+        self.max_download_bytes = max_download_bytes
         self._token = None
         self._sesion = requests.Session()
 
@@ -173,6 +180,35 @@ class GraphClient:
             # Otros codigos: no reintentar.
             raise GraphError(f"Microsoft Graph respondio con codigo inesperado {codigo}.")
 
+    def _validar_tamano(self, respuesta):
+        """
+        Rechaza una descarga demasiado grande ANTES de leer su cuerpo.
+
+        Usa la cabecera Content-Length que envia Microsoft Graph. Si el tamano
+        declarado supera max_download_bytes, se aborta sin cargar el cuerpo en
+        memoria (proteccion de recursos, ver steering security.md seccion 9).
+
+        Si no hay limite configurado o la cabecera no viene, no bloquea aqui:
+        sample.py aplica el control final sobre los bytes ya escritos.
+        """
+        if not self.max_download_bytes:
+            return
+        valor = respuesta.headers.get("Content-Length")
+        if not valor:
+            return
+        try:
+            tamano = int(valor)
+        except ValueError:
+            return
+        if tamano > self.max_download_bytes:
+            # Cerrar la conexion sin descargar el cuerpo.
+            respuesta.close()
+            raise GraphError(
+                "El adjunto supera el tamano maximo permitido "
+                f"({tamano} bytes > {self.max_download_bytes} bytes). "
+                "No se descarga."
+            )
+
     def _esperar(self, intento):
         """Espera con backoff exponencial acotado."""
         espera = min(BACKOFF_BASE_SEGUNDOS * (2 ** (intento - 1)), BACKOFF_MAX_SEGUNDOS)
@@ -232,10 +268,18 @@ class GraphClient:
         Devuelve los bytes de un fileAttachment.
         Prefiere contentBytes (base64); si no viene, usa /$value.
         """
-        import base64
-
         contenido_b64 = attachment.get("contentBytes")
         if contenido_b64 is not None:
+            # Estimar el tamano real desde el largo base64 (aprox 3/4) para
+            # rechazar adjuntos enormes antes de decodificarlos en memoria.
+            if self.max_download_bytes:
+                tamano_estimado = (len(contenido_b64) * 3) // 4
+                if tamano_estimado > self.max_download_bytes:
+                    raise GraphError(
+                        "El adjunto supera el tamano maximo permitido "
+                        f"({tamano_estimado} bytes aprox > "
+                        f"{self.max_download_bytes} bytes). No se descarga."
+                    )
             return base64.b64decode(contenido_b64)
 
         att_id = attachment["id"]
@@ -244,6 +288,7 @@ class GraphClient:
             f"/attachments/{att_id}/$value"
         )
         respuesta = self._get(url, stream=True)
+        self._validar_tamano(respuesta)  # aborta si es demasiado grande
         return respuesta.content
 
     def descargar_item_attachment(self, message_id, attachment_id):
@@ -255,4 +300,5 @@ class GraphClient:
             f"/attachments/{attachment_id}/$value"
         )
         respuesta = self._get(url, stream=True)
+        self._validar_tamano(respuesta)  # aborta si es demasiado grande
         return respuesta.content

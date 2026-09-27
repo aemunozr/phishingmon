@@ -75,6 +75,10 @@ class Config:
         )
 
         # --- Conversion ------------------------------------------------------
+        # KEEP_ORIGINAL_MSG es solo INFORMATIVO: el .msg original es evidencia y
+        # NUNCA se borra (ver steering security.md seccion 10, cadena de
+        # custodia). Aunque se ponga en false, el original se conserva igual.
+        # Se mantiene la variable para dejar explicita la politica.
         self.keep_original_msg = _a_bool(os.getenv("KEEP_ORIGINAL_MSG"), True)
         self.create_eml = _a_bool(os.getenv("CREATE_EML"), True)
 
