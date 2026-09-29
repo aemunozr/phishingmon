@@ -206,6 +206,27 @@ def sha256_de_bytes(datos):
 #  Guardado seguro de archivos (.part -> rename atomico)
 # ---------------------------------------------------------------------------
 
+def _escribir_atomico(ruta_final, datos, modo):
+    """
+    Escribe 'datos' a un archivo temporal '.part', lo vuelca a disco (fsync) y
+    luego lo renombra de forma atomica a 'ruta_final'.
+
+    Asi el archivo final aparece SOLO cuando esta completo: nunca queda una
+    muestra a medias que el Analyzer pudiera leer por error.
+
+    - modo "wb": 'datos' son bytes (por ejemplo el .msg o el .eml).
+    - modo "w" : 'datos' son texto (por ejemplo metadata.json).
+    """
+    ruta_part = ruta_final + ".part"
+    codificacion = None if modo == "wb" else "utf-8"
+    with open(_ruta_larga(ruta_part), modo, encoding=codificacion) as f:
+        f.write(datos)
+        f.flush()
+        os.fsync(f.fileno())
+    os.replace(_ruta_larga(ruta_part), _ruta_larga(ruta_final))
+    return ruta_final
+
+
 def _guardar_bytes_seguro(contenido, ruta_final, max_bytes):
     """
     Escribe 'contenido' a un archivo temporal .part, valida tamano y luego lo
@@ -224,15 +245,7 @@ def _guardar_bytes_seguro(contenido, ruta_final, max_bytes):
             f"({len(contenido)} bytes > {max_bytes} bytes)."
         )
 
-    ruta_part = ruta_final + ".part"
-    with open(_ruta_larga(ruta_part), "wb") as f:
-        f.write(contenido)
-        f.flush()
-        os.fsync(f.fileno())
-
-    # Rename atomico dentro del mismo directorio.
-    os.replace(_ruta_larga(ruta_part), _ruta_larga(ruta_final))
-    return ruta_final
+    return _escribir_atomico(ruta_final, contenido, "wb")
 
 
 def guardar_msg(contenido, dir_muestra, nombre_base, max_bytes):
@@ -376,12 +389,7 @@ def convertir_msg_a_eml(ruta_msg, dir_muestra, nombre_base):
             )
 
         # Escribir el .eml de forma atomica.
-        ruta_part = ruta_eml + ".part"
-        with open(_ruta_larga(ruta_part), "wb") as f:
-            f.write(eml.as_bytes())
-            f.flush()
-            os.fsync(f.fileno())
-        os.replace(_ruta_larga(ruta_part), _ruta_larga(ruta_eml))
+        _escribir_atomico(ruta_eml, eml.as_bytes(), "wb")
     except SampleError:
         raise
     except Exception as exc:  # noqa: BLE001
@@ -405,13 +413,8 @@ def crear_metadata(dir_muestra, datos):
     por el collector. No se guardan secretos.
     """
     ruta = ruta_segura_en(dir_muestra, "metadata.json")
-    ruta_part = ruta + ".part"
-    with open(_ruta_larga(ruta_part), "w", encoding="utf-8") as f:
-        json.dump(datos, f, ensure_ascii=False, indent=2)
-        f.flush()
-        os.fsync(f.fileno())
-    os.replace(_ruta_larga(ruta_part), _ruta_larga(ruta))
-    return ruta
+    texto = json.dumps(datos, ensure_ascii=False, indent=2)
+    return _escribir_atomico(ruta, texto, "w")
 
 
 def crear_hashes_txt(dir_muestra, sha256_msg, sha256_eml):

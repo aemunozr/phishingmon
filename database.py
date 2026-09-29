@@ -34,6 +34,11 @@ AN_PENDIENTE = "PENDIENTE"
 CLAVE_ULTIMA_REVISION = "last_successful_check"
 
 
+def _ahora():
+    """Fecha y hora actual como texto ISO en UTC (para guardar en la base)."""
+    return a_iso(ahora_utc())
+
+
 class Database:
     """Acceso a la base SQLite del Collector."""
 
@@ -157,7 +162,7 @@ class Database:
 
         Devuelve el id de la fila insertada. Usa consulta parametrizada.
         """
-        ahora = a_iso(ahora_utc())
+        ahora = _ahora()
         cursor = self.conexion.execute(
             """
             INSERT INTO processed_attachments (
@@ -208,7 +213,7 @@ class Database:
             """,
             (
                 estado, sample_id, sample_path, local_msg_path, local_eml_path,
-                sha256_msg, suspicious_subject, a_iso(ahora_utc()),
+                sha256_msg, suspicious_subject, _ahora(),
                 message_id, attachment_id,
             ),
         )
@@ -218,7 +223,7 @@ class Database:
                               local_eml_path=None, sha256_eml=None,
                               marcar_procesado=False):
         """Actualiza el estado de conversion (y opcionalmente processed_at)."""
-        processed_at = a_iso(ahora_utc()) if marcar_procesado else None
+        processed_at = _ahora() if marcar_procesado else None
         self.conexion.execute(
             """
             UPDATE processed_attachments
@@ -231,7 +236,7 @@ class Database:
             """,
             (
                 estado, local_eml_path, sha256_eml, processed_at,
-                a_iso(ahora_utc()), message_id, attachment_id,
+                _ahora(), message_id, attachment_id,
             ),
         )
         self.conexion.commit()
@@ -253,7 +258,7 @@ class Database:
              WHERE message_id = ? AND attachment_id = ?
             """,
             (
-                mensaje, a_iso(ahora_utc()), estado_descarga, estado_conversion,
+                mensaje, _ahora(), estado_descarga, estado_conversion,
                 message_id, attachment_id,
             ),
         )

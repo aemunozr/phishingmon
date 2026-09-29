@@ -180,6 +180,19 @@ class GraphClient:
             # Otros codigos: no reintentar.
             raise GraphError(f"Microsoft Graph respondio con codigo inesperado {codigo}.")
 
+    def _header_entero(self, respuesta, nombre):
+        """
+        Lee una cabecera HTTP y la devuelve como numero entero.
+        Devuelve None si la cabecera no viene o no es un numero valido.
+        """
+        valor = respuesta.headers.get(nombre)
+        if not valor:
+            return None
+        try:
+            return int(valor)
+        except ValueError:
+            return None
+
     def _validar_tamano(self, respuesta):
         """
         Rechaza una descarga demasiado grande ANTES de leer su cuerpo.
@@ -193,12 +206,8 @@ class GraphClient:
         """
         if not self.max_download_bytes:
             return
-        valor = respuesta.headers.get("Content-Length")
-        if not valor:
-            return
-        try:
-            tamano = int(valor)
-        except ValueError:
+        tamano = self._header_entero(respuesta, "Content-Length")
+        if tamano is None:
             return
         if tamano > self.max_download_bytes:
             # Cerrar la conexion sin descargar el cuerpo.
@@ -209,20 +218,20 @@ class GraphClient:
                 "No se descarga."
             )
 
+    def _backoff(self, intento):
+        """Calcula la espera (segundos) con backoff exponencial acotado."""
+        return min(BACKOFF_BASE_SEGUNDOS * (2 ** (intento - 1)), BACKOFF_MAX_SEGUNDOS)
+
     def _esperar(self, intento):
         """Espera con backoff exponencial acotado."""
-        espera = min(BACKOFF_BASE_SEGUNDOS * (2 ** (intento - 1)), BACKOFF_MAX_SEGUNDOS)
-        time.sleep(espera)
+        time.sleep(self._backoff(intento))
 
     def _retry_after(self, respuesta, intento):
         """Calcula la espera para un 429 respetando Retry-After si viene."""
-        valor = respuesta.headers.get("Retry-After")
-        if valor:
-            try:
-                return min(int(valor), BACKOFF_MAX_SEGUNDOS)
-            except ValueError:
-                pass
-        return min(BACKOFF_BASE_SEGUNDOS * (2 ** (intento - 1)), BACKOFF_MAX_SEGUNDOS)
+        segundos = self._header_entero(respuesta, "Retry-After")
+        if segundos is not None:
+            return min(segundos, BACKOFF_MAX_SEGUNDOS)
+        return self._backoff(intento)
 
     # --------------------------------------------------------- leer mensajes
 
@@ -242,18 +251,17 @@ class GraphClient:
             "$top": 50,
         }
 
+        # Se pide la primera pagina y, mientras Graph indique que hay mas
+        # (cabecera @odata.nextLink), se piden las siguientes. Solo GET.
         mensajes = []
-        respuesta = self._get(url, params=params)
-        datos = respuesta.json()
-        mensajes.extend(datos.get("value", []))
-
-        # Paginacion con @odata.nextLink.
-        siguiente = datos.get("@odata.nextLink")
-        while siguiente:
-            respuesta = self._get(siguiente)
-            datos = respuesta.json()
+        siguiente = self._get(url, params=params)
+        while True:
+            datos = siguiente.json()
             mensajes.extend(datos.get("value", []))
-            siguiente = datos.get("@odata.nextLink")
+            url_siguiente = datos.get("@odata.nextLink")
+            if not url_siguiente:
+                break
+            siguiente = self._get(url_siguiente)
 
         return mensajes
 
@@ -282,18 +290,21 @@ class GraphClient:
                     )
             return base64.b64decode(contenido_b64)
 
-        att_id = attachment["id"]
-        url = (
-            f"{URL_GRAPH}/users/{self.mailbox}/messages/{message_id}"
-            f"/attachments/{att_id}/$value"
-        )
-        respuesta = self._get(url, stream=True)
-        self._validar_tamano(respuesta)  # aborta si es demasiado grande
-        return respuesta.content
+        return self._descargar_valor(message_id, attachment["id"])
 
     def descargar_item_attachment(self, message_id, attachment_id):
         """
         Devuelve el contenido MIME (.eml) de un itemAttachment mediante /$value.
+        """
+        return self._descargar_valor(message_id, attachment_id)
+
+    def _descargar_valor(self, message_id, attachment_id):
+        """
+        Descarga los bytes de un adjunto por el endpoint /$value (solo GET).
+        Valida el tamano por Content-Length antes de leer el cuerpo.
+
+        Lo usan tanto los fileAttachment (cuando no traen contentBytes) como los
+        itemAttachment. Centralizar evita repetir la URL y la validacion.
         """
         url = (
             f"{URL_GRAPH}/users/{self.mailbox}/messages/{message_id}"
