@@ -123,7 +123,42 @@ python main.py --debug         # mas detalle tecnico
 python main.py --help          # ayuda
 ```
 
-## 10. Automatizar con cron (cada 5 minutos)
+## 10. Dejarlo operando solo cada 5 minutos
+
+### Opcion recomendada: instalador automatico (para no tecnicos)
+
+Se incluye `instalar_servidor.sh`, que hace **todo** con un solo comando: prepara
+el entorno virtual (`.venv`), instala las dependencias, hace una primera corrida
+de prueba y **programa la ejecucion automatica cada 5 minutos** (via `cron` +
+`flock`, sin que tenga que editar el crontab a mano).
+
+Requisito previo: haber creado el `.env` (ver seccion 7).
+
+```
+./instalar_servidor.sh
+```
+
+No necesita `sudo`: la tarea se programa en el `cron` del usuario actual (el que
+opera el Collector, no `root`).
+
+> Si la primera corrida tarda mucho y prefiere que la haga el propio cron, puede
+> omitirla: `OMITIR_PRIMERA_CORRIDA=1 ./instalar_servidor.sh`
+
+Comprobar que quedo funcionando:
+
+```
+crontab -l                      # muestra la tarea programada
+tail -f logs/cron.log           # registro de las corridas automaticas
+.venv/bin/python main.py --status   # estado desde la base SQLite
+```
+
+Detener la ejecucion automatica:
+
+```
+crontab -l | grep -vF "$(pwd)/ejecutar.sh" | crontab -
+```
+
+### Alternativa: configurar el cron a mano (avanzado)
 
 Se incluye `ejecutar.sh`, que activa el `.venv` y ejecuta la herramienta con
 `umask 027` (permisos seguros).
