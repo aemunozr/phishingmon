@@ -12,6 +12,7 @@ downloads/
 
 # Logs
 logs/
+*.log
 
 # Entorno virtual de Python
 .venv/

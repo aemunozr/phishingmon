@@ -37,6 +37,11 @@ class Resumen:
         self.eml_ok = 0
         self.errores = 0
         self.ya_observadas = 0
+        # Correos reportados que NO traen un .msg / itemAttachment que preservar.
+        # Suelen ser reportes reenviados sin usar el boton "Report Phishing".
+        # Son un punto ciego para el SOC: se cuentan y se registran, aunque no
+        # generan muestra (no hay evidencia que recolectar).
+        self.reportes_sin_adjunto = 0
 
     def como_dict(self):
         return self.__dict__.copy()
@@ -91,6 +96,8 @@ class Collector:
 
         for correo in mensajes:
             if not correo.get("hasAttachments"):
+                # Reporte sin ningun adjunto: no hay evidencia que preservar.
+                self._registrar_sin_adjunto(correo, resumen)
                 continue
             message_id = correo["id"]
             try:
@@ -100,14 +107,39 @@ class Collector:
                 logger.warning("No se pudieron listar adjuntos de un correo: %s", exc)
                 continue
 
+            candidatos_en_correo = 0
             for adjunto in adjuntos:
                 if not self._es_candidato(adjunto):
                     continue
+                candidatos_en_correo += 1
                 resumen.adjuntos_candidatos += 1
                 self._procesar_adjunto(correo, adjunto, resumen,
                                        dry_run=dry_run, force=force)
 
+            # Correo con adjuntos, pero ninguno es un .msg / itemAttachment
+            # (por ejemplo, se reenvio con una imagen o un PDF, sin el .msg).
+            if candidatos_en_correo == 0:
+                self._registrar_sin_adjunto(correo, resumen)
+
         return resumen, True
+
+    def _registrar_sin_adjunto(self, correo, resumen):
+        """
+        Cuenta y registra un reporte que llego SIN un .msg que preservar.
+
+        No genera muestra (no hay evidencia), pero se deja constancia en el log
+        para que el SOC sepa que hubo un reporte incompleto: probablemente el
+        usuario no uso el boton "Report Phishing" de Outlook. Asi el analista
+        puede pedirle que reenvie el correo correctamente.
+        """
+        resumen.reportes_sin_adjunto += 1
+        remitente = ((correo.get("from") or {}).get("emailAddress") or {}).get("address", "")
+        logger.warning(
+            "Reporte SIN adjunto .msg (no se recolecta evidencia). "
+            "De: %s | Asunto: %s",
+            remitente or "(desconocido)",
+            correo.get("subject", "(sin asunto)"),
+        )
 
     def _procesar_adjunto(self, correo, adjunto, resumen, *, dry_run, force):
         """Procesa un adjunto candidato de forma segura y trazable."""

@@ -86,6 +86,15 @@ Para que corra cada 10 minutos, cambia `*/5` por `*/10`.
 | `429` (throttling)     | Microsoft esta limitando             | Nada: el programa espera y reintenta solo            |
 | `database is locked`   | Dos ejecuciones a la vez              | Verificar que `flock` este en la linea de cron       |
 | Error de conversion EML| Un `.msg` raro no se pudo convertir  | Normal: el `.msg` original SI se guarda igual        |
+| `Reporte SIN adjunto`  | Alguien reporto un correo sin el `.msg` adjunto | Ver nota abajo: pedir al usuario que reenvie usando el boton "Report Phishing" |
+
+> **Reportes SIN adjunto:** en el resumen aparece la linea
+> `Reportes SIN adjunto .msg : N`. Son correos que llegaron al buzon de phishing
+> pero **sin** el `.msg` del correo sospechoso adjunto (normalmente el usuario
+> reenvio el correo a mano en vez de usar el boton "Report Phishing" de Outlook).
+> No generan muestra porque no hay evidencia que preservar, pero quedan
+> registrados en el log (con remitente y asunto) para que el SOC pueda pedirle
+> al usuario que lo reenvie correctamente.
 
 
 ## 6. Respaldos

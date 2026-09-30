@@ -192,6 +192,7 @@ def main(argv=None):
         logger.info("==== RESUMEN ====")
         logger.info("Correos en la ventana        : %d", resumen.correos)
         logger.info("Adjuntos candidatos          : %d", resumen.adjuntos_candidatos)
+        logger.info("Reportes SIN adjunto .msg    : %d", resumen.reportes_sin_adjunto)
         if args.dry_run:
             logger.info("(DRY-RUN) Adjuntos que se descargarian: %d", resumen.nuevos)
         else:
